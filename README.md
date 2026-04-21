@@ -1,6 +1,57 @@
-# ViewMyProjects
+# 🗂️ View My Projects
 
 An elegant, interactive project launcher built with p5.js featuring smooth animations, keyboard navigation, and responsive design.
+
+<img src="screenshots/image1.png" width="48%"> <img src="screenshot/image2.png" width="48%">
+
+An online portfolio allowing easy access to the works done in class to learn new skills. This interactive hub is designed so that teachers can evaluate projects, observe progress, and orient ongoing development.
+
+📖 About
+
+This project was developed as an academic exercise for a final year unit at ISTEC Porto.
+
+The learning objectives were:
+
+Setting up an interactive environment that the user can interact with
+
+Enabling users to experience an open narrative where they can choose their own path
+
+Utilizing p5.js for canvas rendering and interactive UI elements
+
+Integrating GitHub hosting and different APIs for a cohesive web experience
+
+🛠️ Built With
+
+Tool
+
+Detail
+
+p5.js
+
+Core library for canvas drawing and interaction
+
+JavaScript
+
+Logic, array mapping, and DOM linking
+
+Platform
+
+Web (HTML5 Canvas)
+
+Hosting
+
+GitHub Pages
+
+🚀 Running the Project
+
+This project is built with p5.js and hosted on GitHub servers. It runs directly in the browser — no local installation or IDE setup required.
+
+🎮 Try It
+
+▶️ View Portfolio in Browser
+
+▶️ Access it here: https://vero279.github.io/ViewMyProjects/
+
 
 ## Features
 
@@ -148,8 +199,14 @@ Modify the RGB values in `config.js` for each project's accent color, or edit th
 
 ## License
 
-MIT - Feel free to use this project as a template for your own portfolio or launcher.
+⚠️ Disclaimer
+
+This project is an example exercise meant for evaluation in an academic context. It is not intended for production use and may have limitations inherent to a learning environment. Feel free to use this project as a template for your own portfolio or launcher.
 
 ## Credits
 
 Built with [p5.js](https://p5js.org) - A JavaScript library for creative coding.
+
+👩‍💻 Author
+
+Verónica Couto Final Year Student — ISTEC Porto
