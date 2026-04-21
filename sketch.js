@@ -133,10 +133,12 @@ function draw() {
  */
 function drawErrorState() {
   background(10, 14, 39);
-  fill(255, 107, 107);
-  textSize(16);
+  fill(255, 107, 107, 220);
+  textSize(18);
   textAlign(CENTER, CENTER);
+  textStyle(BOLD);
   text('Failed to load projects', width / 2, height / 2);
+  textStyle(NORMAL);
 }
 
 /**
@@ -144,11 +146,11 @@ function drawErrorState() {
  */
 function drawBackgroundGradient() {
   noStroke();
-  // Create a subtle gradient from top-left to bottom-right
+  // Create a subtle gradient from top-left to bottom-right with improved contrast
   for (let i = 0; i < width; i++) {
     let gradientColor = lerpColor(
       color(10, 20, 55, 0),
-      color(0, 40, 80, 15),
+      color(0, 50, 100, 20),  // Slightly more visible
       i / width
     );
     stroke(gradientColor);
@@ -161,31 +163,48 @@ function drawBackgroundGradient() {
 // ═══════════════════════════════════════════════════════════════════
 
 /**
- * Build button positions based on project count and canvas size
+ * Build button positions based on project count and canvas size (grid layout)
  */
 function buildButtons() {
   const btnWidth = 260;
-  const btnHeight = 64;
+  const btnHeight = 72;
   const btnGap = 32;
+  const containerPadding = 40;
 
-  const totalHeight = AppState.projects.length * btnHeight + 
-                      (AppState.projects.length - 1) * btnGap;
-  const startY = (height - totalHeight) / 2;
+  // Determine grid columns based on canvas width
+  const cols = width > 600 ? 2 : 1;
+  const rows = Math.ceil(AppState.projects.length / cols);
 
-  AppState.buttons = AppState.projects.map((project, index) => ({
-    ...project,
-    x: (width - btnWidth) / 2,
-    y: startY + index * (btnHeight + btnGap),
-    width: btnWidth,
-    height: btnHeight,
-  }));
+  // Calculate total grid dimensions
+  const gridWidth = cols * btnWidth + (cols - 1) * btnGap;
+  const gridHeight = rows * btnHeight + (rows - 1) * btnGap;
+
+  // Position grid in center of canvas
+  const gridStartX = (width - gridWidth) / 2;
+  const gridStartY = (height - gridHeight) / 2;
+
+  // Map projects to grid positions
+  AppState.buttons = AppState.projects.map((project, index) => {
+    const row = Math.floor(index / cols);
+    const col = index % cols;
+    const x = gridStartX + col * (btnWidth + btnGap);
+    const y = gridStartY + row * (btnHeight + btnGap);
+
+    return {
+      ...project,
+      x,
+      y,
+      width: btnWidth,
+      height: btnHeight,
+    };
+  });
 }
 
 /**
  * Draw subtle grid background texture
  */
 function drawGrid() {
-  stroke(0, 191, 255, 6);  // Cyan grid with low opacity
+  stroke(0, 191, 255, 8);  // Cyan grid with low opacity - improved visibility
   strokeWeight(0.5);
   
   for (let x = 0; x < width; x += UIConfig.grid.spacing) {
@@ -200,18 +219,18 @@ function drawGrid() {
  * Draw title and decorative elements
  */
 function drawTitleSection() {
-  // Title text
+  // Title text - enhanced contrast
   noStroke();
-  fill(232, 240, 255, 160);  // Light blue
-  textSize(11);
+  fill(232, 240, 255, 200);  // Brighter light blue
+  textSize(13);
   textAlign(CENTER, TOP);
   textStyle(BOLD);
   text(UIConfig.title.text, width / 2, UIConfig.title.offsetY);
   textStyle(NORMAL);
 
-  // Decorative line with gradient effect
-  stroke(0, 191, 255, 50);  // Cyan
-  strokeWeight(1);
+  // Decorative line with improved visibility
+  stroke(0, 191, 255, 80);  // Cyan - higher opacity
+  strokeWeight(1.5);
   line(
     width / 2 - UIConfig.title.lineLength,
     UIConfig.title.lineY,
@@ -228,28 +247,31 @@ function drawTitleSection() {
 function drawButton(btn, index) {
   const isHovered = index === AppState.hoveredIndex;
   const [r, g, b] = btn.accent;
-  const cornerRadius = 8;
+  const cornerRadius = 10;
 
   // Glow effect on hover
   if (isHovered) {
     drawButtonGlow(btn, r, g, b, cornerRadius);
   }
 
-  // Button background - elegant dark with subtle tint
+  // Button shadow (always present)
+  drawButtonShadow(btn, cornerRadius, isHovered);
+
+  // Button background - improved contrast
   noStroke();
   const bgColor = isHovered 
-    ? color(r * 0.15, g * 0.15, b * 0.15, 200)
-    : color(15, 20, 50, 180);
+    ? color(r * 0.12, g * 0.12, b * 0.12, 220)
+    : color(15, 22, 60, 160);
   fill(bgColor);
   rect(btn.x, btn.y, btn.width, btn.height, cornerRadius);
 
-  // Button border - elegant and minimal
-  strokeWeight(isHovered ? 1.5 : 1);
-  stroke(r, g, b, isHovered ? 200 : 80);
+  // Button border - improved contrast
+  strokeWeight(isHovered ? 2 : 1.5);
+  stroke(r, g, b, isHovered ? 220 : 120);
   noFill();
   rect(btn.x, btn.y, btn.width, btn.height, cornerRadius);
 
-  // Accent stripe
+  // Accent stripe with improved visibility
   drawAccentStripe(btn, r, g, b, isHovered);
 
   // Button label
@@ -260,21 +282,36 @@ function drawButton(btn, index) {
 }
 
 /**
+ * Draw button shadow for depth
+ */
+function drawButtonShadow(btn, cornerRadius, isHovered) {
+  noStroke();
+  const shadowAlpha = isHovered ? 25 : 15;
+  fill(0, 0, 0, shadowAlpha);
+  rect(
+    btn.x + 3,
+    btn.y + 3,
+    btn.width,
+    btn.height,
+    cornerRadius
+  );
+}
+
+/**
  * Draw glow effect around button on hover
  */
 function drawButtonGlow(btn, r, g, b, cornerRadius) {
   noStroke();
   
-  // Create multiple layers for smooth, elegant glow
+  // Create multi-layer glow for enhanced contrast
   const glowLayers = [
-    { spread: 32, alpha: 8 },
-    { spread: 20, alpha: 15 },
-    { spread: 10, alpha: 20 },
+    { spread: 40, alpha: 6 },
+    { spread: 24, alpha: 12 },
+    { spread: 12, alpha: 18 },
   ];
   
   glowLayers.forEach(layer => {
-    const alpha = map(layer.spread, 32, 0, layer.alpha, 0);
-    fill(r, g, b, alpha);
+    fill(r, g, b, layer.alpha);
     rect(
       btn.x - layer.spread,
       btn.y - layer.spread,
@@ -290,10 +327,11 @@ function drawButtonGlow(btn, r, g, b, cornerRadius) {
  */
 function drawAccentStripe(btn, r, g, b, isHovered) {
   noStroke();
-  const stripeAlpha = isHovered ? 200 : 140;
-  const stripeWidth = 3;
-  const stripeMargin = 14;
+  const stripeAlpha = isHovered ? 255 : 180;
+  const stripeWidth = 4;
+  const stripeMargin = 15;
   
+  // Gradient effect on stripe
   fill(r, g, b, stripeAlpha);
   rect(
     btn.x,
@@ -309,12 +347,12 @@ function drawAccentStripe(btn, r, g, b, isHovered) {
  */
 function drawButtonLabel(btn, r, g, b, isHovered) {
   noStroke();
-  const labelColor = isHovered ? color(r, g, b, 255) : color(168, 184, 216);
+  const labelColor = isHovered ? color(r, g, b, 255) : color(200, 220, 240);
   fill(labelColor);
-  textSize(14);
+  textSize(isHovered ? 15 : 14);
   textAlign(LEFT, CENTER);
   textStyle(isHovered ? BOLD : NORMAL);
-  text(btn.label, btn.x + 22, btn.y + btn.height / 2);
+  text(btn.label, btn.x + 24, btn.y + btn.height / 2);
   textStyle(NORMAL);
 }
 
@@ -322,11 +360,11 @@ function drawButtonLabel(btn, r, g, b, isHovered) {
  * Draw arrow indicator on button
  */
 function drawArrowIndicator(btn, r, g, b, isHovered) {
-  const arrowAlpha = isHovered ? 220 : 100;
+  const arrowAlpha = isHovered ? 240 : 140;
   fill(r, g, b, arrowAlpha);
-  textSize(14);
+  textSize(isHovered ? 16 : 14);
   textAlign(RIGHT, CENTER);
-  text('↗', btn.x + btn.width - 18, btn.y + btn.height / 2);
+  text('↗', btn.x + btn.width - 20, btn.y + btn.height / 2);
 }
 
 // ═══════════════════════════════════════════════════════════════════

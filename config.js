@@ -14,12 +14,12 @@ const AppConfig = {
    *   - accent: RGB color array [red, green, blue] (0-255)
    * 
    * Color Palette (Blue & Green Cold Tones):
-   *   - Cyan: [0, 212, 255]
-   *   - Blue: [0, 191, 255]
+   *   - Deep Cyan: [0, 212, 255]
+   *   - Vibrant Blue: [0, 191, 255]
+   *   - Ocean Blue: [70, 150, 200]
    *   - Teal: [0, 201, 183]
-   *   - Green: [45, 212, 191]
-   *   - Ocean: [70, 150, 200]
-   *   - Deep Blue: [100, 150, 200]
+   *   - Mint Green: [45, 212, 191]
+   *   - Light Cyan: [100, 200, 240]
    */
   projects: [
     {
@@ -32,11 +32,25 @@ const AppConfig = {
       url: "https://vero279.github.io/BlueSquare/",
       accent: [45, 212, 191],  // Elegant teal
     },
-    // Add more projects below:
-    // {
-    //   label: "Project Name",
-    //   url: "https://example.com/project",
-    //   accent: [0, 212, 255],  // Cyan
-    // },
+    {
+      label: "Films JSON",
+      url: "https://vero279.github.io/Films-JSON/",
+      accent: [0, 212, 255],  // Deep cyan
+    },
+    {
+      label: "Weather API",
+      url: "https://vero279.github.io/Weather-API/",
+      accent: [70, 150, 200],  // Ocean blue
+    },
+    {
+      label: "Camera Toggles",
+      url: "https://vero279.github.io/Camera-Toggles-Twist-Dancing/",
+      accent: [0, 201, 183],  // Teal
+    },
+    {
+      label: "Camera Slider",
+      url: "https://vero279.github.io/Camera-Slider/",
+      accent: [100, 200, 240],  // Light cyan
+    },
   ],
 };
