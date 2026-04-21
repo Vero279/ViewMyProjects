@@ -24,7 +24,7 @@ const UIConfig = {
     spacing: 28,
   },
   title: {
-    text: "SELECT A PROJECT",
+    text: "ISTEC 2026 - Projects",
     offsetY: 28,
     lineY: 48,
     lineLength: 60,
