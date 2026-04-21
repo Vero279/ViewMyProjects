@@ -43,5 +43,17 @@ const AppConfig = {
       repo: "https://github.com/vero279/Camera-Slider",
       accent: [100, 200, 240],
     },
+    {
+      label: "Brush Image Editing",
+      url: "https://vero279.github.io/EDI_MUL_INT_01/",
+      repo: "https://github.com/Vero279/EDI_MUL_INT_01",
+      accent: [100, 200, 240],
+    },
+    {
+      label: "Speech Recognition",
+      url: "https://vero279.github.io/EDI_MUL_INTERATIVAS_01/",
+      repo: "https://github.com/Vero279/EDI_MUL_INTERATIVAS_01",
+      accent: [100, 200, 240],
+    },
   ],
 };
