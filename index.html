@@ -13,50 +13,6 @@
     <script src="p5.min.js"></script>
     <script src="config.js"></script>
     <script src="sketch.js"></script>
-    <script>
-      const cardsEl = document.querySelector('#projectCards');
-      const searchEl = document.querySelector('#project-search');
-
-      function buildProjectCard(project) {
-        const card = document.createElement('a');
-        card.className = 'card';
-        card.href = project.url;
-        card.target = '_blank';
-        card.rel = 'noreferrer noopener';
-        card.style.setProperty('--accent', `rgba(${project.accent.join(',')}, 1)`);
-
-        card.innerHTML = `
-          <div class="card-copy">
-            <h2>${project.label}</h2>
-            <p>Open the live demo or explore the repository.</p>
-          </div>
-          <div class="card-meta">
-            <span class="card-pill">Demo</span>
-            <span class="card-arrow">↗</span>
-          </div>
-        `;
-
-        return card;
-      }
-
-      function renderCards(filter = '') {
-        const query = filter.trim().toLowerCase();
-        cardsEl.innerHTML = '';
-
-        const filtered = AppConfig.projects.filter((project) =>
-          project.label.toLowerCase().includes(query)
-        );
-
-        if (!filtered.length) {
-          cardsEl.innerHTML = '<p class="empty-state">No projects matched your search.</p>';
-          return;
-        }
-
-        filtered.forEach((project) => cardsEl.appendChild(buildProjectCard(project)));
-      }
-
-      searchEl.addEventListener('input', (event) => renderCards(event.target.value));
-      renderCards();
-    </script>
+    
   </body>
 </html>
