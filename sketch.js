@@ -1,13 +1,13 @@
-// ─── Project URLs — replace placeholders with your GitHub links ───
-const projects = [
+// ─── Project URLs — use AppConfig if available, otherwise fallback to hardcoded links ───
+const fallbackProjects = [
   {
-    label: "Red Circle",
-    url: "https://vero279.github.io/RedCircle/", // 🔴 replace
+    label: 'Red Circle',
+    url: 'https://vero279.github.io/RedCircle/',
     accent: [220, 60, 60],
   },
   {
-    label: "Blue Square",
-    url: "https://vero279.github.io/BlueSquare/", // 🔵 replace
+    label: 'Blue Square',
+    url: 'https://vero279.github.io/BlueSquare/',
     accent: [60, 120, 220],
   },
 ];
@@ -21,15 +21,28 @@ const CORNER_R = 6;
 let buttons = [];
 let hoveredIndex = -1;
 
+function getProjects() {
+  return typeof AppConfig !== 'undefined' && Array.isArray(AppConfig.projects)
+    ? AppConfig.projects
+    : fallbackProjects;
+}
+
 // ─── p5 setup ─────────────────────────────────────────────────────
 function setup() {
-  let cnv = createCanvas(600, 340);
-  cnv.parent("canvas-container");
-  textFont("monospace");
+  let cnv = createCanvas(windowWidth, windowHeight);
+  cnv.parent('canvas-container');
+  cnv.style('display', 'block');
+  textFont('monospace');
+  buildButtons();
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
   buildButtons();
 }
 
 function buildButtons() {
+  const projects = getProjects();
   let totalH = projects.length * BTN_H + (projects.length - 1) * BTN_GAP;
   let startY = (height - totalH) / 2;
 
