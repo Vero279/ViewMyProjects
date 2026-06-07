@@ -1,153 +1,133 @@
-// ─── Project URLs — use AppConfig if available, otherwise fallback to hardcoded links ───
+// ─── Animated background: floating rose & violet petals ───────────────
+// Replaces the old button-based navigation with a subtle decorative canvas.
+
+let petals = [];
+const PETAL_COUNT = 60;
+
+function setup() {
+  let cnv = createCanvas(windowWidth, windowHeight);
+  cnv.parent('canvas-container');
+  cnv.style('display', 'block');
+  noStroke();
+
+  // Create initial petals
+  for (let i = 0; i < PETAL_COUNT; i++) {
+    petals.push(new Petal());
+  }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+
+function draw() {
+  // Clear with a very dark, slightly transparent background for trail effect
+  background(8, 9, 13, 25);
+
+  // Update and display petals
+  for (let p of petals) {
+    p.update();
+    p.display();
+  }
+}
+
+// ─── Petal class ──────────────────────────────────────────────────────
+class Petal {
+  constructor() {
+    this.reset();
+    // Start at random positions across the screen
+    this.y = random(height);
+  }
+
+  reset() {
+    this.x = random(-50, width + 50);
+    this.y = random(-100, -20);
+    this.size = random(6, 18);
+    this.speedX = random(-0.3, 0.3);
+    this.speedY = random(0.4, 1.4);
+    this.rotation = random(TWO_PI);
+    this.rotSpeed = random(-0.02, 0.02);
+    this.wobble = random(0.5, 1.5);
+    this.wobbleSpeed = random(0.005, 0.02);
+    this.alpha = random(30, 90);
+    // 60% chance of rose (red), 40% violet (blue)
+    if (random() < 0.6) {
+      this.color = color(200, 40, 50, this.alpha);   // rose red
+      this.type = 'rose';
+    } else {
+      this.color = color(120, 100, 220, this.alpha); // violet blue
+      this.type = 'violet';
+    }
+  }
+
+  update() {
+    // Floating downward with gentle horizontal sway
+    this.x += this.speedX + sin(frameCount * this.wobbleSpeed + this.y * 0.01) * this.wobble * 0.3;
+    this.y += this.speedY;
+    this.rotation += this.rotSpeed;
+
+    // Reset when off screen
+    if (this.y > height + 50) {
+      this.reset();
+    }
+    // Wrap horizontally
+    if (this.x > width + 50) this.x = -50;
+    if (this.x < -50) this.x = width + 50;
+  }
+
+  display() {
+    push();
+    translate(this.x, this.y);
+    rotate(this.rotation);
+
+    if (this.type === 'rose') {
+      // Simple rose petal shape (elongated ellipse)
+      fill(red(this.color), green(this.color), blue(this.color), this.alpha);
+      noStroke();
+      for (let i = 0; i < 5; i++) {
+        push();
+        rotate(i * TWO_PI / 5);
+        ellipse(0, -this.size * 0.5, this.size * 0.3, this.size * 0.7);
+        pop();
+      }
+      // Center dot
+      fill(180, 20, 30, this.alpha * 0.8);
+      circle(0, 0, this.size * 0.35);
+    } else {
+      // Violet petal shape
+      fill(red(this.color), green(this.color), blue(this.color), this.alpha);
+      noStroke();
+      for (let i = 0; i < 5; i++) {
+        push();
+        rotate(i * TWO_PI / 5);
+        ellipse(0, -this.size * 0.45, this.size * 0.35, this.size * 0.65);
+        pop();
+      }
+      fill(140, 120, 240, this.alpha * 0.8);
+      circle(0, 0, this.size * 0.3);
+    }
+    pop();
+  }
+}
+
+// ─── Fallback projects (used if config.js is missing) ─────────────────
 const fallbackProjects = [
   {
-    label: 'Red Circle',
-    url: 'https://vero279.github.io/RedCircle/',
+    label: 'Red Roses',
+    url: 'https://vero279.github.io/FloatingLetters/',
+    arrowUrl: 'https://github.com/Vero279/FloatingLetters',
     accent: [220, 60, 60],
   },
   {
-    label: 'Blue Square',
-    url: 'https://vero279.github.io/BlueSquare/',
+    label: 'Blue Violets',
+    url: 'https://vero279.github.io/EditorBrush/',
+    arrowUrl: 'https://github.com/Vero279/EditorBrush',
     accent: [60, 120, 220],
   },
 ];
-
-// ─── Layout constants ─────────────────────────────────────────────
-const BTN_W = 260;
-const BTN_H = 64;
-const BTN_GAP = 32;
-const CORNER_R = 6;
-
-let buttons = [];
-let hoveredIndex = -1;
 
 function getProjects() {
   return typeof AppConfig !== 'undefined' && Array.isArray(AppConfig.projects)
     ? AppConfig.projects
     : fallbackProjects;
-}
-
-// ─── p5 setup ─────────────────────────────────────────────────────
-function setup() {
-  let cnv = createCanvas(windowWidth, windowHeight);
-  cnv.parent('canvas-container');
-  cnv.style('display', 'block');
-  textFont('monospace');
-  buildButtons();
-}
-
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
-  buildButtons();
-}
-
-function buildButtons() {
-  const projects = getProjects();
-  let totalH = projects.length * BTN_H + (projects.length - 1) * BTN_GAP;
-  let startY = (height - totalH) / 2;
-
-  buttons = projects.map((p, i) => ({
-    ...p,
-    x: (width - BTN_W) / 2,
-    y: startY + i * (BTN_H + BTN_GAP),
-    w: BTN_W,
-    h: BTN_H,
-  }));
-}
-
-// ─── p5 draw ──────────────────────────────────────────────────────
-function draw() {
-  background(13);
-
-  // Subtle grid texture
-  stroke(255, 255, 255, 8);
-  strokeWeight(0.5);
-  for (let x = 0; x < width; x += 28) line(x, 0, x, height);
-  for (let y = 0; y < height; y += 28) line(0, y, width, y);
-
-  // Title
-  noStroke();
-  fill(255, 255, 255, 140);
-  textSize(11);
-  textAlign(CENTER, TOP);
-  text("SELECT A PROJECT", width / 2, 28);
-
-  // Decorative line under title
-  stroke(255, 255, 255, 30);
-  strokeWeight(1);
-  line(width / 2 - 60, 48, width / 2 + 60, 48);
-
-  // Buttons
-  buttons.forEach((btn, i) => drawButton(btn, i));
-}
-
-function drawButton(btn, i) {
-  let isHover = i === hoveredIndex;
-  let [r, g, b] = btn.accent;
-
-  // Glow behind button on hover
-  if (isHover) {
-    noStroke();
-    for (let spread = 24; spread > 0; spread -= 4) {
-      fill(r, g, b, map(spread, 0, 24, 0, 18));
-      rect(
-        btn.x - spread,
-        btn.y - spread,
-        btn.w + spread * 2,
-        btn.h + spread * 2,
-        CORNER_R + spread
-      );
-    }
-  }
-
-  // Button body
-  noStroke();
-  fill(isHover ? color(r * 0.2, g * 0.2, b * 0.2) : color(22, 22, 22));
-  rect(btn.x, btn.y, btn.w, btn.h, CORNER_R);
-
-  // Border
-  strokeWeight(isHover ? 1.5 : 1);
-  stroke(r, g, b, isHover ? 255 : 90);
-  noFill();
-  rect(btn.x, btn.y, btn.w, btn.h, CORNER_R);
-
-  // Accent stripe on left edge
-  noStroke();
-  fill(r, g, b, isHover ? 255 : 160);
-  rect(btn.x, btn.y + 12, 3, btn.h - 24, 2);
-
-  // Label
-  noStroke();
-  fill(isHover ? color(r, g, b) : color(200));
-  textSize(14);
-  textAlign(LEFT, CENTER);
-  text(btn.label, btn.x + 22, btn.y + btn.h / 2);
-
-  // Arrow indicator
-  fill(r, g, b, isHover ? 220 : 80);
-  textSize(14);
-  textAlign(RIGHT, CENTER);
-  text("↗", btn.x + btn.w - 16, btn.y + btn.h / 2);
-}
-
-// ─── Interaction ──────────────────────────────────────────────────
-function mouseMoved() {
-  hoveredIndex = buttons.findIndex((btn) => isOverButton(btn));
-  cursor(hoveredIndex >= 0 ? HAND : 'default');
-}
-
-function mousePressed() {
-  let clicked = buttons.findIndex((btn) => isOverButton(btn));
-  if (clicked >= 0) {
-    window.open(buttons[clicked].url, "_blank");
-  }
-}
-
-function isOverButton(btn) {
-  return (
-    mouseX >= btn.x &&
-    mouseX <= btn.x + btn.w &&
-    mouseY >= btn.y &&
-    mouseY <= btn.y + btn.h
-  );
 }
