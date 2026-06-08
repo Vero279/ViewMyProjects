@@ -116,7 +116,7 @@ const fallbackProjects = [
   {
     label: 'Red Roses',
     url: 'RedCircle/index.html',
-    arrowUrl: 'https://github.com/Vero279/FloatingLetters',
+    arrowUrl: 'https://github.com/Vero279/RedCircle',
     accent: [220, 60, 60],
   },
   {
