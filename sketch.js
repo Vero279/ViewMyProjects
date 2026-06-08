@@ -116,13 +116,13 @@ const fallbackProjects = [
   {
     label: 'Red Roses',
     url: 'RedCircle/index.html',
-    arrowUrl: 'https://github.com/Vero279/RedCircle',
+    arrowUrl: 'https://github.com/Vero279/RedCircle/',
     accent: [220, 60, 60],
   },
   {
     label: 'Blue Violets',
     url: 'BlueSquare/index.html',
-    arrowUrl: 'https://github.com/Vero279/BlueSquare',
+    arrowUrl: 'https://github.com/Vero279/BlueSquare/',
     accent: [60, 120, 220],
   },
 ];
