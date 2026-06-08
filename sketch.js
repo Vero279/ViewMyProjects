@@ -122,7 +122,7 @@ const fallbackProjects = [
   {
     label: 'Blue Violets',
     url: 'BlueSquare/index.html',
-    arrowUrl: 'https://github.com/Vero279/EditorBrush',
+    arrowUrl: 'https://github.com/Vero279/BlueSquare',
     accent: [60, 120, 220],
   },
 ];
