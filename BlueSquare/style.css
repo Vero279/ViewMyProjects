@@ -1,0 +1,84 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #f0f0f0;
+  font-family: system-ui, 'Segoe UI', sans-serif;
+}
+
+canvas {
+  display: block;
+  margin: 20px auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-radius: 8px;
+}
+
+/* Controls container – created by p5.js */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+  background: white;
+  padding: 15px 20px;
+  border-radius: 40px;
+  margin: 20px auto;
+  width: fit-content;
+  max-width: 90%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.controls > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f9f9f9;
+  padding: 8px 16px;
+  border-radius: 40px;
+}
+
+.controls label {
+  font-weight: 600;
+  color: #333;
+}
+
+.controls input, .controls button {
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+button {
+  background: #2c7da0;
+  border: none;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 40px;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #1f5e7a;
+  transform: scale(1.02);
+}
+
+.info-text {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #555;
+  margin: 10px auto;
+}
+
+/* Responsive: smaller padding on mobile */
+@media (max-width: 600px) {
+  .controls {
+    gap: 10px;
+    padding: 12px;
+  }
+  .controls > div {
+    padding: 4px 12px;
+  }
+  button {
+    padding: 6px 16px;
+  }
+}
