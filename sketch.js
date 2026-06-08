@@ -1,6 +1,7 @@
 // ─── Animated background: floating rose & violet petals ───────────────
 // Replaces the old button-based navigation with a subtle decorative canvas.
 
+
 let petals = [];
 const PETAL_COUNT = 60;
 
@@ -114,13 +115,13 @@ class Petal {
 const fallbackProjects = [
   {
     label: 'Red Roses',
-    url: 'https://vero279.github.io/FloatingLetters/',
+    url: 'RedCircle/index.html',
     arrowUrl: 'https://github.com/Vero279/FloatingLetters',
     accent: [220, 60, 60],
   },
   {
     label: 'Blue Violets',
-    url: 'https://vero279.github.io/EditorBrush/',
+    url: 'BlueSquare/index.html',
     arrowUrl: 'https://github.com/Vero279/EditorBrush',
     accent: [60, 120, 220],
   },
